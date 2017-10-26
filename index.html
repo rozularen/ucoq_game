@@ -3,18 +3,44 @@
   <head>
     <title>Socket.IO App</title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" type="text/css" href="../juego/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../juego/node_modules/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="../juego/css/index.css">
+
+     <!-- Scripts -->
+    <script type="text/javascript" src="../juego/socket.io/socket.io.js"></script> 
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../juego/node_modules/bootstrap/dist/js/bootstrap.js"></script>
+
   </head>
   <body>
     <h1>Bienvenido al Juego</h1>
 
-    <canvas id="canvas"></canvas>
+    <div id='nickname-prompt-overlay'>
+      <div id='nickname-prompt-container'>
+        <form id='nickname-form'>
+          <div class='input-group'>
+            <input type='text'
+                   class='form-control'
+                   id='nickname'
+                   placeholder='Nickname'
+                   autocomplete='off' />
+            <span class='input-group-addon'
+                  id='nickname-submit'>
+              Chat
+            </span>
+          </div>
+        </form>
+      </div>
+    </div>
 
-    <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="../juego/socket.io/socket.io.js"></script> 
+    <canvas id='canvas'></canvas>
+
     <!-- Load the common game code. -->
+    <script type="text/javascript" src="../juego/KeyboardBuffer.js"></script>
+    <script type="text/javascript" src="../juego/base.js"></script>
+    <script type="text/javascript" src="../juego/game/Drawing.js"></script>
+    <script type="text/javascript" src="../juego/game/Game.js"></script>
     <script type="text/javascript" src="../juego/client.js"></script>
  </body>
 </html>

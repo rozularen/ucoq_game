@@ -4,7 +4,11 @@
   "description": "mi primer juego multiplayer con Socket.IO y Express",
   "main": "server.js",
   "dependencies": {
+    "bootstrap": "^3.3.7",
     "express": "^4.15.2",
+    "font-awesome": "^4.7.0",
+    "hashmap": "^2.3.0",
+    "jquery": "^2.2.4",
     "node-uuid": "^1.4.8",
     "socket.io": "^2.0.4"
   },
