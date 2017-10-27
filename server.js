@@ -1,59 +1,59 @@
+var PORT_NUMBER = process.env.PORT || 3000;
+var FRAME_RATE = 1000.0 / 60.0;
+
 var express = require('express');
-var socket = require('socket.io');
 var http = require('http');
-var HashMap = require('hashmap');
+var socket = require('socket.io');
+var Game = require('./server/Game.js');
+
+var game = new Game();
 
 var app = express();
 var server = http.Server(app);
 var io = socket(server);
 
-var port = process.env.PORT || 3000;
-
-var Player = require('./Player').Player;
-var clients = new HashMap();
+app.set('port', PORT_NUMBER);
 
 app.use(express.static(__dirname));
- 
-app.get('/juego', function() {
-	console.log('Trying to load %s', __dirname + '/index.html');
-	res.sendFile('index.html', { root:__dirname} );
+
+app.get('/', function(req, res) {
+	res.sendFile(__dirname + '/public/index.html');
 });
 
-app.get('/juego/*', function(req, res) {
-	var file = req.params[0];
-
-    console.log('\t :: Express :: file requested : ' + file);
-
-    res.sendFile(__dirname + '/' + file);
+app.get('/*', function(req, res) {
+	res.sendFile(__dirname + '/public' + req.path);
 });
-
 // Socket.IO handler
 io.on('connection', function(socket) {
-	socket.on('new player', function(data) {
-		var player = new Player(100, 100, data, socket.id);
-		clients.set(socket.id, player);
-		socket.emit('send-id', socket.id);
-		
-		io.sockets.emit('update-players', clients.values());
-	});
+  // When a new player joins, the server sends his/her unique ID back so
+  // for future identification purposes.
+  socket.on('new-player', function(data) {
+    game.addNewPlayer(data.name, socket.id);
+    socket.emit('send-id', {
+      id: socket.id,
+      players: game.getPlayers()
+    });
+  });
 
-	socket.on('move-player', function(data) {
-		var player = clients.get(data.id);
-		player.update(data.keyboardState);
-		clients.set(socket.id, player);
+  socket.on('move-player', function(data) {
+    game.updatePlayer(socket.id, data.keyboardState, data.turretAngle);
+  });
 
-		io.sockets.emit('update-players', clients.values());
-	});
+  // TODO: player shooting sound and explosion animations
+  socket.on('fire-bullet', function() {
+    game.addProjectile(socket.id);
+  });
 
-	socket.on('disconnect', function() {
-		if (clients.has(socket.id)) {
-			clients.remove(socket.id);
-		}
-
-		io.sockets.emit('update-players', clients.values());
-	});
+  // TODO: player disconnect explosion animation?
+  socket.on('disconnect', function() {
+    game.removePlayer(socket.id);
+  });
 });
 
-server.listen(port, function() {
-    console.log('Listening on *:' + port);
+setInterval(function() {
+  game.update(io);
+}, FRAME_RATE);
+
+server.listen(PORT_NUMBER, function() {
+    console.log('Listening on *:' + PORT_NUMBER);
 }); 

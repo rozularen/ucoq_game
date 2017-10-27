@@ -13,21 +13,19 @@
     <script type="text/javascript" src="../juego/node_modules/bootstrap/dist/js/bootstrap.js"></script>
 
   </head>
-  <body>
-    <h1>Bienvenido al Juego</h1>
-
-    <div id='nickname-prompt-overlay'>
-      <div id='nickname-prompt-container'>
-        <form id='nickname-form'>
+  <body oncontextmenu='return false;'>
+    <div id='name-prompt-overlay'>
+      <div id='name-prompt-container'>
+        <form id='name-form'>
           <div class='input-group'>
             <input type='text'
                    class='form-control'
-                   id='nickname'
+                   id='name-input'
                    placeholder='Nickname'
                    autocomplete='off' />
             <span class='input-group-addon'
-                  id='nickname-submit'>
-              Chat
+                  id='name-submit'>
+              Play
             </span>
           </div>
         </form>
@@ -37,10 +35,12 @@
     <canvas id='canvas'></canvas>
 
     <!-- Load the common game code. -->
-    <script type="text/javascript" src="../juego/KeyboardBuffer.js"></script>
-    <script type="text/javascript" src="../juego/base.js"></script>
-    <script type="text/javascript" src="../juego/game/Drawing.js"></script>
-    <script type="text/javascript" src="../juego/game/Game.js"></script>
-    <script type="text/javascript" src="../juego/client.js"></script>
+    <script src='requestAnimFrame.js'></script>
+    <script type="text/javascript" src="../juego/public/game/Input.js"></script>
+    <script type="text/javascript" src="../juego/public/game/ViewPort.js"></script>
+    <script type="text/javascript" src="../juego/public/game/Drawing.js"></script>
+    <script type="text/javascript" src="../juego/public/game/Environment.js"></script>
+    <script type="text/javascript" src="../juego/public/game/Game.js"></script>
+    <script type="text/javascript" src="../juego/public/client.js"></script>
  </body>
 </html>
